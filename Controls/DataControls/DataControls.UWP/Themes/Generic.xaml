@@ -724,7 +724,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="listView:RadListViewItem">
-                    <Border x:Name="grid" Background="Transparent" Padding="{TemplateBinding Margin}">
+                    <Grid x:Name="grid" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -749,8 +749,8 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckBox" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="borderSelected" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TelerikSelectedBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -759,8 +759,8 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckBox" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="borderSelected" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -773,16 +773,9 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="ReorderDisabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_ReorderHandle" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
+                                <VisualState x:Name="ReorderDisabled" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid Background="{TemplateBinding Background}">
                             <ContentControl x:Name="PART_Content" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" Margin="{TemplateBinding Padding}" 
                                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
                                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
@@ -795,13 +788,6 @@
                                     VerticalAlignment="Stretch" 
                                     HorizontalAlignment="Stretch" 
                                     BorderBrush="{TemplateBinding BorderBrush}" 
-                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                    Background="{x:Null}"/>
-                            <Border x:Name="borderSelected" Visibility="Collapsed" 
-                                    IsHitTestVisible="False"
-                                    VerticalAlignment="Stretch" 
-                                    HorizontalAlignment="Stretch" 
-                                    BorderBrush="{StaticResource TelerikSelectedBrush}" 
                                     BorderThickness="{TemplateBinding BorderThickness}" 
                                     Background="{x:Null}"/>
                             <Grid x:Name="CheckBox" IsHitTestVisible="False" Visibility="Collapsed" Width="35" Height="35" Margin="4"
@@ -833,7 +819,7 @@
 									Width="{Binding Path=Orientation, RelativeSource={RelativeSource TemplatedParent},
 													 Converter={StaticResource orientationToSizeConverter},
 													 ConverterParameter=Width}" 
-                                    x:Name="PART_FirstHandle"/>
+                                    x:Name="PART_FirstHandle" Visibility="Collapsed" x:DeferLoadStrategy="Lazy"/>
                             <Border Background="Transparent" 
 									HorizontalAlignment="{Binding Path=Orientation, RelativeSource={RelativeSource TemplatedParent}, 
 																  Converter={StaticResource orientationToHorizontalAlignmentConverter}, 
@@ -847,15 +833,15 @@
 									Width="{Binding Path=Orientation, RelativeSource={RelativeSource TemplatedParent},
 													 Converter={StaticResource orientationToSizeConverter},
 													 ConverterParameter=Width}" 
-                                    x:Name="PART_SecondHandle"/>
-                            <BitmapIcon  x:Name="PART_ReorderHandle" UriSource="{Binding HandleIconPath, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                    ManipulationMode="None" Width="48" Height="48"  HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    x:Name="PART_SecondHandle" Visibility="Collapsed" x:DeferLoadStrategy="Lazy"/>
+                            <BitmapIcon x:Name="PART_ReorderHandle" UriSource="{Binding HandleIconPath, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        ManipulationMode="None" Width="48" Height="48"  HorizontalAlignment="Right" VerticalAlignment="Center"
+                                        Visibility="Collapsed" x:DeferLoadStrategy="Lazy">
                                 <BitmapIcon.RenderTransform>
                                     <RotateTransform CenterX="0.5" CenterY="0.5" Angle="{Binding Orientation, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource orientationToRotateDegreesConverter}}" />
                                 </BitmapIcon.RenderTransform>
                             </BitmapIcon>
                         </Grid>
-                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
